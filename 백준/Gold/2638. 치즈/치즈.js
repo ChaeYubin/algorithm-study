@@ -29,7 +29,6 @@ class Queue {
 const fs = require("fs");
 const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
 
-// 정리
 const [n, m] = input.shift().split(" ").map(Number);
 
 const map = [];
@@ -93,7 +92,7 @@ function melting() {
 
 function solution() {
   while (true) {
-    // 외부 공기 식별
+    // 외부 공기를 기준으로 BFS를 돌면서 다음에 녹을 치즈를 식별한다.
     distinguishExterior(0, 0);
 
     // 치즈를 녹이고, 녹인 치즈 자리는 외부 공기로 채운다.
