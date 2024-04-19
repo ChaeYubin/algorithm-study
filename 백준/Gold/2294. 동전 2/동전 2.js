@@ -10,8 +10,6 @@ input.forEach((v) => {
 });
 
 function solution(coin, k) {
-  let answer;
-
   // 동전 가치의 중복을 제거하고 오름차순으로 정렬한다.
   const coinSet = [...new Set(coin)].sort((a, b) => a - b);
 
