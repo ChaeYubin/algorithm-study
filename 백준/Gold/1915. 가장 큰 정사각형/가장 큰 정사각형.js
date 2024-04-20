@@ -1,24 +1,31 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
-let input = fs.readFileSync(filePath).toString().trim().split('\n');
+const fs = require("fs");
+const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
 
-const [n, m] = input.shift().split(' ').map(Number);
-let arr = Array.from({ length: n }, () => Array.from({ length: m }, () => 0));
+const [n, m] = input.shift().split(" ").map(Number);
+const arr = [];
 
-input.map((i, idx) => (arr[idx] = i.trim().split('').map(Number)));
-let dp = arr.map((x) => [...x]);
+input.forEach((row) => arr.push(row.split("").map(Number)));
 
-for (let i = 1; i < n; i++) {
-  for (let j = 1; j < m; j++) {
-    if (arr[i][j]) dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
+function solution(n, m, arr) {
+  let answer = 0;
+
+  const dp = [];
+  arr.forEach((row) => dp.push([...row]));
+
+  for (let i = 1; i < n; i++) {
+    for (let j = 1; j < m; j++) {
+      if (arr[i][j] === 0) continue;
+      dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+    }
   }
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      answer = Math.max(answer, dp[i][j]);
+    }
+  }
+
+  return answer ** 2;
 }
 
-let ans = 0;
-
-for (let i = 0; i < n; i++) {
-  for (let j = 0; j < m; j++) {
-    ans = dp[i][j] > ans ? dp[i][j] : ans;
-  }
-}
-console.log(ans ** 2);
+console.log(solution(n, m, arr));
