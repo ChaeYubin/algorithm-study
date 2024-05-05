@@ -8,8 +8,8 @@ function solution(n) {
   let end = 1;
 
   while (end < n) {
+    end += answer * 6;
     answer += 1;
-    end += (answer - 1) * 6;
   }
 
   return answer;
