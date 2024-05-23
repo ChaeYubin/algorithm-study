@@ -1,26 +1,37 @@
-const fs = require('fs')
-let [N, M, ...I] = fs
-  .readFileSync('/dev/stdin')
-  .toString()
-  .trim()
-  .split('\n')
-N = +N
-let [x, y] = I.pop().split(' ').map(Number)
-let G = Array.from({length: N + 1}, _ => [])
-for (const i in I) {
-  const [a, b, cost] = I[i].split(' ').map(Number)
-  G[a].push([b, cost])
+const fs = require("fs");
+const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
+
+const n = +input.shift(); // 도시 개수
+const m = +input.shift(); // 버스 개수
+const [start, end] = input.pop().split(" ").map(Number);
+
+const bus = Array.from({ length: n + 1 }, () => []);
+
+for (const i in input) {
+  const [start, end, cost] = input[i].split(" ").map(Number);
+  bus[start].push([end, cost]);
 }
-const O = new Array(N + 1).fill(Infinity)
-O[x] = 0
-const Q = [[x, 0]]
-while (Q.length) {
-  const [c, cost] = Q.shift()
-  if (cost > O[c]) continue
-  for (const [n, nCost] of G[c])
-    if (O[c] + nCost < O[n]) {
-      O[n] = O[c] + nCost
-      Q.push([n, O[n]])
+
+function solution(n, m, start, end, bus) {
+  const dis = Array.from({ length: n + 1 }, () => Infinity);
+  const queue = [[start, 0]];
+  dis[start] = 0;
+
+  while (queue.length) {
+    const [cur, cost] = queue.shift();
+
+    // 이미 이전에 더 작은 값이 구해졌다면 건너뛴다.
+    if (cost > dis[cur]) continue;
+
+    for (const [next, nextCost] of bus[cur]) {
+      if (dis[cur] + nextCost < dis[next]) {
+        dis[next] = dis[cur] + nextCost;
+        queue.push([next, dis[next]]);
+      }
     }
+  }
+
+  return dis[end];
 }
-console.log(O[y])
+
+console.log(solution(n, m, start, end, bus));
