@@ -7,60 +7,50 @@ const map = [];
 let max = 0;
 let min = 101;
 
-let answer = 0;
-
-input.forEach((line, index) => {
-  map.push(line.split(" ").map(Number));
-  min = Math.min(min, Math.min(...map[index]));
-  max = Math.max(max, Math.max(...map[index]));
-});
+for (let i = 0; i < n; i += 1) {
+  map[i] = input[i].split(" ").map(Number);
+  min = Math.min(min, Math.min(...map[i]));
+  max = Math.max(max, Math.max(...map[i]));
+}
 
 let visited = Array.from({ length: n }, () =>
   Array.from({ length: n }, () => false)
 );
 
 const dx = [-1, 0, 1, 0];
-const dy = [0, -1, 0, 1];
+const dy = [0, 1, 0, -1];
 
-function bfs(rain, x, y) {
-  const queue = [];
-  queue.push([x, y]);
-  visited[x][y] = true;
+function dfs(rain, x, y) {
+  for (let i = 0; i < 4; i += 1) {
+    const nx = x + dx[i];
+    const ny = y + dy[i];
 
-  while (queue.length) {
-    const [x, y] = queue.shift();
+    if (
+      nx < 0 ||
+      nx >= n ||
+      ny < 0 ||
+      ny >= n ||
+      map[nx][ny] <= rain ||
+      visited[nx][ny]
+    )
+      continue;
 
-    for (let i = 0; i < 4; i++) {
-      const nx = x + dx[i];
-      const ny = y + dy[i];
-
-      if (
-        nx < 0 ||
-        nx >= n ||
-        ny < 0 ||
-        ny >= n ||
-        visited[nx][ny] ||
-        map[nx][ny] <= rain
-      )
-        continue;
-
-      visited[nx][ny] = true;
-      queue.push([nx, ny]);
-    }
+    visited[nx][ny] = true;
+    dfs(rain, nx, ny);
   }
 }
 
 function solution() {
   let answer = 0;
-  for (let rain = 0; rain < max; rain++) {
+
+  for (let rain = 0; rain < max; rain += 1) {
     let sectionCnt = 0;
 
-    for (let i = 0; i < n; i++) {
-      for (let j = 0; j < n; j++) {
-        // 물에 잠기지 않았고, 아직 방문하지 않은 지점이라면 인접한 영역을 모두 방문한다.
+    for (let i = 0; i < n; i += 1) {
+      for (let j = 0; j < n; j += 1) {
         if (map[i][j] > rain && !visited[i][j]) {
           sectionCnt += 1;
-          bfs(rain, i, j);
+          dfs(rain, i, j);
         }
       }
     }
