@@ -9,9 +9,12 @@ function solution(n, m, x, y, r, c, k) {
     const moves = { 'd': [1, 0], 'l': [0, -1], 'r': [0, 1], 'u': [-1, 0] };
     
     const dfs = (x, y, route) => {
+        // moves를 사전 순으로 설정해두면 처음으로 발견한 answer가 답이다. 이후 과정은 필요없으므로 리턴.
         if (answer !== 'zzzzz') return;
         
-        // Pruning: 남은 거리 확인
+        // 목표 지점까지 남은 거리가 움직일 수 있는 거리보다 크거나,
+        // 목표 지점까지 남은 거리와 이동해야 하는 거리의 차가 홀수이면 리턴
+        // ㄴ 홀수이면 목표 지점에 딱 도착할 수 없음
         const remainingSteps = k - route.length;
         const manhattanDistance = Math.abs(x - (r - 1)) + Math.abs(y - (c - 1));
         
