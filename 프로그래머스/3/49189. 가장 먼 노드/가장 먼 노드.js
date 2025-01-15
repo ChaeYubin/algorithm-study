@@ -9,7 +9,7 @@ function solution(n, edge) {
         adjList[e].push(s);
     });
     
-    // 다익스트라로 각 정점까지의 최단 경로 길이 찾기
+    // 다익스트라로 각 정점까지의 최단 경로 거리 찾기
     let dis = Array(n + 1).fill(Infinity);  // 1번부터 n번까지의 최단 경로의 거리를 저장할 배열
     
     const queue = [1];
@@ -26,7 +26,7 @@ function solution(n, edge) {
         }
     }
     
-    // 길이가 같은 노드의 개수를 세서 리턴
+    // 거리가 같은 노드의 개수를 세서 리턴
     const maxValue = Math.max(...dis.filter(v => v !== Infinity));
     return dis.filter(v => v === maxValue).length;
 }
