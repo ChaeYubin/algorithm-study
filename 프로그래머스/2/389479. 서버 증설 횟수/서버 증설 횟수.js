@@ -6,12 +6,12 @@ function solution(players, m, k) {
         // 서버 증설이 필요한 경우
         if (server[i] < Math.floor(players[i] / m)) {
             // 서버 증설
-            const expandServerNum = Math.floor(players[i] / m) - server[i]
-            answer += expandServerNum;
+            const expandServerCount = Math.floor(players[i] / m) - server[i]
+            answer += expandServerCount;
             
             for (let j = 0; j < k; j++) {
                 if (i + j > 23) break;
-                server[i + j] += expandServerNum;
+                server[i + j] += expandServerCount;
             }
         }
     }
