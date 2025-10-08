@@ -1,4 +1,8 @@
 function dfs(computers, visited, node) {
+    if (visited[node]) {
+        return 0;  // 이미 방문했다면 새 네트워크가 아님
+    }
+    
     visited[node] = true; // 현재 노드 방문 처리
     
     for (let i = 0; i < computers[node].length; i++) {
@@ -6,6 +10,8 @@ function dfs(computers, visited, node) {
             dfs(computers, visited, i);
         }
     }
+    
+    return 1;
 }
 
 function solution(n, computers) {
@@ -14,10 +20,7 @@ function solution(n, computers) {
     let answer = 0;
     
     for (let i = 0; i < n; i += 1) {
-        if (!visited[i]) {
-            dfs(computers, visited, i);
-            answer += 1;
-        }
+        answer += dfs(computers, visited, i);
     }
     
     return answer;
