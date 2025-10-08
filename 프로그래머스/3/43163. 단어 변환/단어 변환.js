@@ -9,10 +9,14 @@ function solution(begin, target, words) {
         let different = 0;
         
         for (let i = 0; i < str1.length; i++) {
-            if (str1[i] !== str2[i]) different++;
+            if (str1[i] !== str2[i]) {
+                if (++different > 1) {
+                    return false;
+                }
+            }
         }
         
-        return different === 1 ? true : false;
+        return true;
     }
     
     while (queue.length > 0) {
