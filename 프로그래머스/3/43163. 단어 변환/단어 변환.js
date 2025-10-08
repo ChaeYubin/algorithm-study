@@ -5,19 +5,8 @@ function solution(begin, target, words) {
     queue.push([begin, 0]);  // [단어, 단어에 도달한 단계]
     
     // 규칙에 따라 변환 가능한지 확인하는 함수
-    const isConvertable = (str1, str2) => {
-        let different = 0;
-        
-        for (let i = 0; i < str1.length; i++) {
-            if (str1[i] !== str2[i]) {
-                if (++different > 1) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
+    const isConvertable = (word1, word2) => 
+        [...word1].filter((ch, i) => ch !== word2[i]).length === 1;
     
     while (queue.length > 0) {
         const [current, stage] = queue.shift();
@@ -26,9 +15,7 @@ function solution(begin, target, words) {
             if (visited[i]) continue;  // 방문한 적 있다면 스킵
             
             if (isConvertable(current, words[i])) {
-                if (words[i] === target) {
-                    return stage + 1;  // target을 발견하면 즉시 리턴
-                }
+                if (words[i] === target) return stage + 1;  // target을 발견하면 즉시 리턴
                 
                 // target이 아닌 경우 방문 처리하고 다음 탐색에 포함
                 visited[i] = 1;
