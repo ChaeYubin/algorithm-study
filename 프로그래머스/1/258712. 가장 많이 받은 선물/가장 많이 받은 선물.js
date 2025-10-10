@@ -1,6 +1,8 @@
 function solution(friends, gifts) {
-    let giftTable = Array.from({length: friends.length}, () => Array.from({length: friends.length}, () => 0));
+    // giftTable[i][j] = i가 j에게 준 선물의 개수
+    const giftTable = Array.from({length: friends.length}, () => Array.from({length: friends.length}, () => 0));
     
+    // 선물 지수
     const giftScore = Array(friends.length).fill(0);
     
     gifts.forEach(str => {
@@ -16,7 +18,7 @@ function solution(friends, gifts) {
     
     let answer = 0;
     
-    let nextGifts = Array(friends.length).fill(0);
+    const nextGifts = Array(friends.length).fill(0);
     
     for (let i = 0; i < friends.length; i += 1) {
         for (let j  = i + 1; j < friends.length; j += 1) {
@@ -24,7 +26,7 @@ function solution(friends, gifts) {
                 const bigger = giftTable[i][j] > giftTable[j][i] ? i : j;
                 nextGifts[bigger] += 1;
             } else {
-                if (giftScore[i] === giftScore[j]) {
+                if (giftScore[i] === giftScore[j]) {  
                     continue;
                 } else {
                     const bigger = giftScore[i] > giftScore[j] ? i : j;
