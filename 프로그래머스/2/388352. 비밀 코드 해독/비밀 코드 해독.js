@@ -1,50 +1,36 @@
 function solution(n, q, ans) {
-    // ans 내림차순 정렬 후 인덱스 확인
-    const sortedIndex = ans.map((v, i) => [v, i])
-                           .sort((a, b) => b[0] - a[0])
-                           .map(v => v[1]);
-
-    const maxAnsIndex = sortedIndex[0];
-    const maxQ = q[maxAnsIndex];
+    let count = 0;
     
-    // 조합 생성 함수
-    const getCombinations = (arr, k) => {
-        const result = [];
-        const dfs = (start, combo) => {
-            if (combo.length === k) {
-                result.push([...combo]);
-                return;
+    const dfs = (index, combo) => {
+        if (combo.length > 5) return;  // 5개 이상이면 종료
+        
+        if (index === n) {
+            if (combo.length === 5) {
+                // 모든 q와 ans 조건 체크
+                let valid = true;
+                
+                for (let i = 0; i < q.length; i++) {
+                    const match = combo.filter(v => q[i].includes(v)).length;
+                    
+                    if (match !== ans[i]) {
+                        valid = false;
+                        break;
+                    }
+                }
+                
+                if (valid) count++;
             }
-            for (let i = start; i < arr.length; i++) {
-                dfs(i + 1, [...combo, arr[i]]);
-            }
-        };
-        dfs(0, []);
-        return result;
-    };
     
-    const candidate1 = getCombinations(maxQ, ans[maxAnsIndex]);
-    
-    // 나머지 숫자에서 남은 개수 뽑기
-    const remainingNumbers = Array.from({ length: n }, (_, i) => i + 1)
-                                  .filter(x => !maxQ.includes(x));
-    const candidate2 = getCombinations(remainingNumbers, 5 - ans[maxAnsIndex]);
-    
-    // 두 조합 합치기
-    const candidate = [];
-    for (let c1 of candidate1) {
-        for (let c2 of candidate2) {
-            candidate.push([...c1, ...c2]);
+            return;
         }
-    }
-
-    // 필터링
-    const getEqualCount = (arr1, arr2) => arr1.filter(v => arr2.includes(v)).length;
-    
-    let finalCandidates = candidate;
-    for (let i = 0; i < ans.length; i++) {
-        finalCandidates = finalCandidates.filter(c => getEqualCount(q[i], c) === ans[i]);
+        
+        // 숫자 index + 1 선택하지 않는 경우
+        dfs(index + 1, combo);
+        
+        // 숫자 index + 1 선택하는 경우
+        dfs(index + 1, [...combo, index + 1]);
     }
     
-    return finalCandidates.length;
+    dfs(0, []);
+    return count;
 }
