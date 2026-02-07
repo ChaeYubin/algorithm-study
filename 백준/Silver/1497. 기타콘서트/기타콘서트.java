@@ -44,7 +44,17 @@ class Main {
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             guitars[i] = st.nextToken();
-            songs[i] = Long.parseLong(st.nextToken().replace('Y', '1').replace('N', '0'), 2);
+
+            String s = st.nextToken();
+            
+            long mask = 0;
+            for (int j = 0; j < m; j++) {
+                if (s.charAt(j) == 'Y') {
+                    mask |= (1L << j);
+                }
+            }
+            
+            songs[i] = mask;
         }
 
         makeGuitarSubset(0, 0, 0);
