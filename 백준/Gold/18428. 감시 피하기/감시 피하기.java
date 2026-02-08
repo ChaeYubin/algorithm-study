@@ -9,6 +9,8 @@ class Main {
     static ArrayList<Position> teachers;
     static char[][] map;
     static boolean valid;
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
 
     public static class Position {
         int x, y;
@@ -21,29 +23,18 @@ class Main {
 
     public static boolean isValid() {
         for (Position teacher : teachers) {
-            int curX = teacher.x;
-            int curY = teacher.y;
-            
-            while (--curX >= 0 && map[curX][curY] != 'O') {
-                if (map[curX][curY] == 'S') return false;
-            }
+            for (int d = 0; d < 4; d++) {
+                int nx = teacher.x;
+                int ny = teacher.y;
 
-            curX = teacher.x;
-            curY = teacher.y;
-            while (++curX < N && map[curX][curY] != 'O') {
-                if (map[curX][curY] == 'S') return false;
-            }
+                while (true) {
+                    nx += dx[d];
+                    ny += dy[d];
 
-            curX = teacher.x;
-            curY = teacher.y;
-            while (--curY >= 0 && map[curX][curY] != 'O') {
-                if (map[curX][curY] == 'S') return false;
-            }
-            
-            curX = teacher.x;
-            curY = teacher.y;
-            while (++curY < N && map[curX][curY] != 'O') {
-                if (map[curX][curY] == 'S') return false;
+                    if (nx < 0 || nx >= N || ny < 0 || ny >= N) break;
+                    if (map[nx][ny] == 'O') break;
+                    if (map[nx][ny] == 'S') return false;
+                }
             }
         }
 
