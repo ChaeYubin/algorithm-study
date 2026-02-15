@@ -2,20 +2,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
     static StringBuilder sb = new StringBuilder();
-    static int n, m;
+    static int N, M;
+    static int[] arr, result;
     static boolean[] visited;
-    static int[] arr;
-    static int[] temp;
-    static LinkedHashSet<String> set = new LinkedHashSet<>();
-    
-    public static void recursion(int level) {
-        if (level == m) {
-            for (int num : temp) {
-                sb.append(num).append(" ");
+    static Set<String> set;
+
+    static void dfs(int count) {
+        if (count == M) {
+            for (int i = 0; i < M; i++) {
+                sb.append(result[i]).append(" ");
             }
 
             set.add(sb.toString());
@@ -24,16 +24,13 @@ public class Main {
             return;
         }
 
-        int prev = -1;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             if (visited[i]) continue;
-            if (prev == arr[i]) continue;
 
             visited[i] = true;
-            temp[level] = arr[i];
-            prev = arr[i];
+            result[count] = arr[i];
+            dfs(count + 1);
 
-            recursion(level + 1);
             visited[i] = false;
         }
     }
@@ -44,26 +41,27 @@ public class Main {
 
         st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        arr = new int[n];
+        arr = new int[N];
+        result = new int[M];
+        visited = new boolean[N];
+        set = new LinkedHashSet<>();
 
         st = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr);  // 오름차순 정렬
+        Arrays.sort(arr);
 
-        temp = new int[m];
-        visited = new boolean[n];
+        dfs(0);
 
-        recursion(0);
+        for (String s : set) {
+            sb.append(s).append("\n");
+        }
 
-        set.forEach(System.out::println);
-
-        br.close();
+        System.out.println(sb);
     }
 }
