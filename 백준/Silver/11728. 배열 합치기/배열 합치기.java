@@ -26,27 +26,20 @@ public class Main {
     int p1 = 0;
     int p2 = 0;
 
-    int[] result = new int[n + m];
-
-    int i = 0;
     while (p1 < n && p2 < m) {
       if (arrA[p1] <= arrB[p2]) {
-        result[i++] = arrA[p1++];
+        sb.append(arrA[p1++]).append(" ");
       } else {
-        result[i++] = arrB[p2++];
+        sb.append(arrB[p2++]).append(" ");
       }
     }
 
     while (p1 < n) {
-      result[i++] = arrA[p1++];
+      sb.append(arrA[p1++]).append(" ");
     }
 
     while (p2 < m) {
-      result[i++] = arrB[p2++];
-    }
-
-    for (int num : result) {
-      sb.append(num).append(" ");
+      sb.append(arrB[p2++]).append(" ");
     }
 
     System.out.println(sb);
